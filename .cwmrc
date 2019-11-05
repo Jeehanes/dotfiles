@@ -1,0 +1,156 @@
+# ~/.cwmrc John Degen, March 2018 OpenBSD 6.2 GENERIC.MP#134 amd64
+# 			
+# DO NOT SOURCE this file, but log out of cwm and log back in (Ctrl-Backspace) 
+# or press CMS-r
+#=====From man cwm: standard bindings=====
+## 	CM-Return       Spawn a new terminal.
+##  CM-Delete       Lock the screen.
+##  M-Return        Hide current window.
+##  M-Down          Lower current window.
+##  M-Up            Raise current window.
+##  M-slash         Search for windows.
+##  C-slash         Search for applications.
+##  CM-n            Label current window.
+##  M-Tab           Cycle through currently visible windows.
+##  MS-Tab          Reverse cycle through currently visible windows.
+##  CM-x            Delete current window.
+##  CM-[n]          Toggle visibility of group n, where n is 1-9.
+##  CM-a            Toggle visibility of all groups.
+##  CM-g            Toggle group membership of current window.
+##  M-Right         Cycle through active groups.
+##  M-Left          Reverse cycle through active groups.
+##  CMS-f           Toggle freezing geometry of current window.
+##  CM-s            Toggle stickiness of current window.
+##  CM-f            Toggle full-screen mode of current window.
+##  CM-m            Toggle maximization of current window.
+##  CM-equal        Toggle vertical maximization of current window.
+##  CMS-equal       Toggle horizontal maximization of current window.
+##  M-[hjkl]        Move window by a small amount.
+##  MS-[hjkl]       Move window by a large amount; see cwmrc(5).
+##  CM-[hjkl]       Resize window by a small amount.
+##  CMS-[hjkl]      Resize window by a large amount; see cwmrc(5).
+##  M-question      Spawn "exec program" dialog.
+##  M-period        Spawn "ssh to" dialog.  This parses
+##                  $HOME/.ssh/known_hosts to provide host auto-
+##                  completion.  ssh(1) will be executed via the
+##                  configured terminal emulator.
+##  CM-w            Spawn "exec WindowManager" dialog, allowing a
+##                  switch to another window manager.
+##  CMS-r           Restart.
+##  CMS-q           Quit.
+
+# Snaps to screen edge
+# neat, but movement with keys doesn't work anymore
+# once a window has snapped
+snapdist 40
+# Alt-Tab between virtual desktops
+bind-key CM-Tab	   group-cycle
+
+# Arrange windows vertically or horizontally
+bind-key CM-t      window-vtile
+bind-key CM-h      window-htile
+
+bind-mouse S-1         /usr/local/bin/gvim
+bind-mouse S-2         /usr/local/bin/emacs
+# |======================================|
+# |from Michael W. Lucas			     |
+# |======================================|
+bind-key CM-v      window-vmaximize
+#mouse-bind M-1   window_move
+#mouse-bind CM-1  window_resize
+unbind-key  C-slash
+unbind-key  M-slash
+# Fogs up Emacs org-mode:
+unbind-key M-Return
+
+#******************** Virtual Desktops ******************* #
+
+# ================
+# Virtual Desktops
+# ================
+#
+# There are two directives that aren't included in the default keyboard shortcuts
+# list: group-only-[n] and window-movetogroup-[n] (where [n] is the number corresponding to
+# window groups 1-9).
+#
+# You can select a group and add a window to it. And you can toggle that group's
+# visibility with CM-[n].
+
+# But, window groups get more powerful when you can select a window group while
+# hiding windows in any other group.
+
+# To do this, I added the following to my ~/.cwmrc (and typed CMS-r):
+
+bind-key M-1 group-only-1
+bind-key M-2 group-only-2
+bind-key M-3 group-only-3
+bind-key M-4 group-only-4
+bind-key M-5 group-only-5
+bind-key M-6 group-only-6
+bind-key M-7 group-only-7
+bind-key M-8 group-only-8
+bind-key M-9 group-only-9
+bind-key MS-1 window-movetogroup-1
+bind-key MS-2 window-movetogroup-2
+bind-key MS-3 window-movetogroup-3
+bind-key MS-4 window-movetogroup-4
+bind-key MS-5 window-movetogroup-5
+bind-key MS-6 window-movetogroup-6
+bind-key MS-7 window-movetogroup-7
+bind-key MS-8 window-movetogroup-8
+bind-key MS-9 window-movetogroup-9
+
+# Now, if I type M-2, it only shows windows in window group 2.
+# And, I can more easily move windows to other groups with MS-[n].
+# For instance, shift+alt+2 will move the current window to group 2
+
+# application menu (right mouse click on desktop)
+command Vim	/usr/local/bin/gvim
+command Emacs	/usr/local/bin/emacs
+command Gimp	 /usr/local/bin/gimp
+command Firefox	firefox
+command Audacious	audacious
+command Libreoffice	"libreoffice"
+command Writer	"libreoffice --writer"
+command Calc	"libreoffice --calc"
+command Hydrogen "/usr/local/bin/hydrogen"
+command Simple_terminal "/usr/local/bin/st -f 'Liberation Mono:size=14' -e tmux"
+
+# groups predefined, use xprop (xprop on prompt, then click window,
+# use WM_CLASS) to get these from each program
+# one item per line  
+autogroup 1     "Firefox", "st"
+autogroup 2     "Gvim"
+autogroup 3     "Emacs"
+autogroup 4		"Gimp"
+#
+autogroup 2     "audacious"
+autogroup 5     "libreoffice", "libreoffice-startcenter"
+autogroup 5     "libreoffice", "libreoffice-writer"
+autogroup 5 	"/usr/local/bin/lowriter"
+autogroup 5     "libreoffice", "libreoffice-calc"
+
+# keyboard shortcuts
+# 
+#==================================================================== 
+bind-key CM-w /usr/local/bin/lowriter
+bind-key CM-f /usr/local/bin/firefox
+bind-key CM-g /usr/local/bin/gvim
+# Start suckless st with specific font, specific geometry and tmux
+bind-key CM-s "/usr/local/bin/st -f 'Liberation Mono:size=14' -g 220x48+0+0 -e tmux"
+# And one with a big font and a small window (it's a clock)
+bind-key CM-c "/usr/local/bin/st -f 'Liberation Mono:size=30' -g 52x21+1209+17 -e tmux"
+
+#=====================================================================
+#
+# 
+# inherit current selected group
+sticky yes
+
+borderwidth 4
+color activeborder blue
+color inactiveborder gray
+color groupborder red
+color ungroupborder yellow
+# Do we need a gap? For what?
+# gap 0 60 0 180

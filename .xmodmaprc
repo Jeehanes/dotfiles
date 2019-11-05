@@ -1,0 +1,6 @@
+! .xmodmaprc John Degen
+! OpenBSD
+! Make Caps_Lock behave like Escape
+remove Lock = Caps_Lock
+keysym Caps_Lock = Escape  
+
